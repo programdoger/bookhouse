@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 去哪个包中查找注解的类-->
+    <context:component-scan base-package="com.bookproject" />
+    <!--加载静态资源文件-->
+    <mvc:resources mapping="/resources/**/" location="/resources/" />
+
+    <!-- 开启SpringMVC的注解-->
+    <mvc:annotation-driven />
+
+    <!--<mvc:resources mapping="/resources/**/" location="classpath*:../resources" />-->
+
+    <!-- 配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 配置全局异常处理-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!--key:是何种异常(类全名)，value:显示异常页面-->
+                <prop key="com.bookproject.exception.NewException">error/404</prop>
+                <prop key="java.lang.NullPointerException">error/404</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置multipart文件处理器
+    必须要添加id属性-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5000000" />
+    </bean>
+
+</beans>
